@@ -1,4 +1,4 @@
-Contact: mailto:claude@gary.gs
+Contact: mailto:security@gary.gs
 Expires: 2027-05-22T00:00:00.000Z
 Preferred-Languages: en
 Canonical: https://am-i-heisenberg.github.io/cyber-reports-calendar/.well-known/security.txt

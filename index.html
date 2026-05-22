@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Security Report Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --surface-raised: #1a2332;
+    --border: #1e293b;
+    --border-hover: #334155;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.15);
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .noise {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--text), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .updated {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .view-toggle button {
+    font-family: var(--font);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .view-toggle button:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+  }
+
+  .view-toggle button.active {
+    background: var(--accent-glow);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* CALENDAR VIEW */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+  }
+
+  .month-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+
+  .month-card:hover {
+    border-color: var(--border-hover);
+  }
+
+  .month-card.peak {
+    border-left: 3px solid var(--accent);
+  }
+
+  .month-name {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .month-card.peak .month-name {
+    color: var(--accent);
+  }
+
+  .report-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .report-item:last-child {
+    border-bottom: none;
+  }
+
+  .report-title {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .report-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .publisher {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .badge-category {
+    background: rgba(167, 139, 250, 0.1);
+    color: var(--purple);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+  }
+
+  .report-link {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    word-break: break-all;
+  }
+
+  .report-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .quiet-month {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    font-style: italic;
+    padding: 0.5rem 0;
+  }
+
+  /* LIST VIEW */
+  .list-view {
+    display: none;
+  }
+
+  .list-view.active {
+    display: block;
+  }
+
+  .calendar-grid.active {
+    display: grid;
+  }
+
+  .calendar-grid:not(.active) {
+    display: none;
+  }
+
+  .category-section {
+    margin-bottom: 2rem;
+  }
+
+  .category-header {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--purple);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .list-item {
+    display: grid;
+    grid-template-columns: 1fr 140px 90px;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .list-item {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+    .calendar-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .list-item-name a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .list-item-name a:hover {
+    color: var(--accent);
+  }
+
+  .list-item-pub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .list-item-month {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .notes-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .notes-section h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+  }
+
+  .notes-section p, .notes-section li {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .notes-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .notes-section ul li::before {
+    content: '→ ';
+    color: var(--text-dim);
+  }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="container">
+
+<header>
+  <h1>Cyber Security Report Calendar</h1>
+  <p>Major industry reports — when they drop, who publishes them, and where to find the latest edition.</p>
+  <div class="updated">Last updated: May 2026</div>
+</header>
+
+<div class="view-toggle">
+  <button class="active" onclick="toggleView('calendar')">Calendar View</button>
+  <button onclick="toggleView('list')">List View</button>
+</div>
+
+<!-- ═══════════ CALENDAR VIEW ═══════════ -->
+<div class="calendar-grid active" id="calendarView">
+
+  <!-- JANUARY -->
+  <div class="month-card peak">
+    <div class="month-name">January</div>
+    <div class="report-item">
+      <div class="report-title">Allianz Risk Barometer</div>
+      <div class="report-meta">
+        <span class="publisher">Allianz Commercial</span>
+        <span class="badge badge-category">Insurance</span>
+      </div>
+      <a class="report-link" href="https://commercial.allianz.com/news-and-insights/news/allianz-risk-barometer-2026.html" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">WEF Global Cybersecurity Outlook</div>
+      <div class="report-meta">
+        <span class="publisher">World Economic Forum</span>
+        <span class="badge badge-category">Intl Gov</span>
+      </div>
+      <a class="report-link" href="https://www.weforum.org/publications/global-cybersecurity-outlook-2026/" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">WEF Global Risks Report</div>
+      <div class="report-meta">
+        <span class="publisher">World Economic Forum</span>
+        <span class="badge badge-category">Intl Gov</span>
+      </div>
+      <a class="report-link" href="https://www.weforum.org/publications/global-risks-report-2026/" target="_blank">2026 Edition →</a>
+    </div>
+  </div>
+
+  <!-- FEBRUARY -->
+  <div class="month-card peak">
+    <div class="month-name">February — Peak Season</div>
+    <div class="report-item">
+      <div class="report-title">CrowdStrike Global Threat Report</div>
+      <div class="report-meta">
+        <span class="publisher">CrowdStrike</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">IBM X-Force Threat Intelligence Index</div>
+      <div class="report-meta">
+        <span class="publisher">IBM</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.ibm.com/reports/threat-intelligence" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Sophos Active Adversary Report</div>
+      <div class="report-meta">
+        <span class="publisher">Sophos</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.sophos.com/en-us/blog/2026-sophos-active-adversary-report" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Unit 42 Global Incident Response Report</div>
+      <div class="report-meta">
+        <span class="publisher">Palo Alto Networks</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.paloaltonetworks.com/resources/research/unit-42-incident-response-report" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Dragos OT/ICS Cybersecurity Year in Review</div>
+      <div class="report-meta">
+        <span class="publisher">Dragos</span>
+        <span class="badge badge-category">OT / CNI</span>
+      </div>
+      <a class="report-link" href="https://www.dragos.com/ot-cybersecurity-year-in-review" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">CISA ICS Advisories</div>
+      <div class="report-meta">
+        <span class="publisher">CISA</span>
+        <span class="badge badge-category">OT / CNI</span>
+      </div>
+      <a class="report-link" href="https://www.cisa.gov/news-events/ics-advisories" target="_blank">Rolling — ongoing advisories →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">E-ISAC GridEx Exercise Reports</div>
+      <div class="report-meta">
+        <span class="publisher">NERC / E-ISAC</span>
+        <span class="badge badge-category">OT / CNI</span>
+      </div>
+      <a class="report-link" href="https://www.nerc.com/pa/CI/ESISAC/Pages/GridEx.aspx" target="_blank">Biennial (odd years) →</a>
+    </div>
+  </div>
+
+  <!-- MARCH -->
+  <div class="month-card peak">
+    <div class="month-name">March</div>
+    <div class="report-item">
+      <div class="report-title">Mandiant M-Trends</div>
+      <div class="report-meta">
+        <span class="publisher">Google / Mandiant</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">NCC Group Annual Cyber Threat Intelligence</div>
+      <div class="report-meta">
+        <span class="publisher">NCC Group</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.nccgroup.com/annual-cyber-threat-intelligence-report-2025/" target="_blank">2025 Report →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Coalition Cyber Claims Report</div>
+      <div class="report-meta">
+        <span class="publisher">Coalition</span>
+        <span class="badge badge-category">Insurance</span>
+      </div>
+      <a class="report-link" href="https://www.coalitioninc.com/claims-report/2026" target="_blank">2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Proofpoint Human Factor (multi-vol)</div>
+      <div class="report-meta">
+        <span class="publisher">Proofpoint</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.proofpoint.com/us/resources/threat-reports/human-factor-social-engineering" target="_blank">2025 Vol.1 (Vol.2 follows ~Aug) →</a>
+    </div>
+  </div>
+
+  <!-- APRIL -->
+  <div class="month-card peak">
+    <div class="month-name">April / May</div>
+    <div class="report-item">
+      <div class="report-title">DSIT Cyber Security Breaches Survey</div>
+      <div class="report-meta">
+        <span class="publisher">DSIT / Home Office</span>
+        <span class="badge badge-category">UK Gov</span>
+      </div>
+      <a class="report-link" href="https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026" target="_blank">2025/2026 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Verizon Data Breach Investigations Report</div>
+      <div class="report-meta">
+        <span class="publisher">Verizon</span>
+        <span class="badge badge-category">Breach Data</span>
+      </div>
+      <a class="report-link" href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank">2026 Edition →</a>
+    </div>
+  </div>
+
+  <!-- JUNE -->
+  <div class="month-card">
+    <div class="month-name">June</div>
+    <div class="quiet-month">Quieter month — watch for mid-year vendor updates and conference outputs (Gartner SRM, Infosecurity Europe).</div>
+  </div>
+
+  <!-- JULY -->
+  <div class="month-card">
+    <div class="month-name">July</div>
+    <div class="report-item">
+      <div class="report-title">IBM Cost of a Data Breach Report</div>
+      <div class="report-meta">
+        <span class="publisher">IBM / Ponemon</span>
+        <span class="badge badge-category">Breach Cost</span>
+      </div>
+      <a class="report-link" href="https://www.ibm.com/reports/data-breach" target="_blank">2025 Edition (2026 due Jul) →</a>
+    </div>
+  </div>
+
+  <!-- AUGUST -->
+  <div class="month-card">
+    <div class="month-name">August</div>
+    <div class="quiet-month">Quieter month — Proofpoint Human Factor Vol.2 typically lands around this time.</div>
+  </div>
+
+  <!-- SEPTEMBER -->
+  <div class="month-card">
+    <div class="month-name">September</div>
+    <div class="quiet-month">Pre-conference season — watch for previews ahead of October reports.</div>
+  </div>
+
+  <!-- OCTOBER -->
+  <div class="month-card peak">
+    <div class="month-name">October — Second Peak</div>
+    <div class="report-item">
+      <div class="report-title">ENISA Threat Landscape</div>
+      <div class="report-meta">
+        <span class="publisher">ENISA</span>
+        <span class="badge badge-category">EU Gov</span>
+      </div>
+      <a class="report-link" href="https://enisa.europa.eu/publications/enisa-threat-landscape-2025" target="_blank">2025 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">Microsoft Digital Defense Report</div>
+      <div class="report-meta">
+        <span class="publisher">Microsoft</span>
+        <span class="badge badge-category">Threat Intel</span>
+      </div>
+      <a class="report-link" href="https://www.microsoft.com/en-us/security/security-insider/threat-landscape/microsoft-digital-defense-report-2025" target="_blank">2025 Edition →</a>
+    </div>
+    <div class="report-item">
+      <div class="report-title">NCSC Annual Review</div>
+      <div class="report-meta">
+        <span class="publisher">NCSC (GCHQ)</span>
+        <span class="badge badge-category">UK Gov</span>
+      </div>
+      <a class="report-link" href="https://www.ncsc.gov.uk/collection/ncsc-annual-review-2025" target="_blank">2025 Edition →</a>
+    </div>
+  </div>
+
+  <!-- NOVEMBER -->
+  <div class="month-card">
+    <div class="month-name">November</div>
+    <div class="quiet-month">Supplementary releases and follow-up webinars from October reports.</div>
+  </div>
+
+  <!-- DECEMBER -->
+  <div class="month-card">
+    <div class="month-name">December</div>
+    <div class="quiet-month">Year-end round-ups. NCC Group Monthly Threat Pulse continues throughout the year.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════ LIST VIEW ═══════════ -->
+<div class="list-view" id="listView">
+
+  <div class="category-section">
+    <div class="category-header">Broad Annual Threat &amp; Breach Reports</div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank">CrowdStrike Global Threat Report</a></div>
+      <div class="list-item-pub">CrowdStrike</div>
+      <div class="list-item-month">Feb</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.ibm.com/reports/threat-intelligence" target="_blank">IBM X-Force Threat Intelligence Index</a></div>
+      <div class="list-item-pub">IBM</div>
+      <div class="list-item-month">Feb</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.sophos.com/en-us/blog/2026-sophos-active-adversary-report" target="_blank">Sophos Active Adversary Report</a></div>
+      <div class="list-item-pub">Sophos</div>
+      <div class="list-item-month">Feb</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.paloaltonetworks.com/resources/research/unit-42-incident-response-report" target="_blank">Unit 42 Global IR Report</a></div>
+      <div class="list-item-pub">Palo Alto Networks</div>
+      <div class="list-item-month">Feb</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026" target="_blank">Mandiant M-Trends</a></div>
+      <div class="list-item-pub">Google / Mandiant</div>
+      <div class="list-item-month">Mar</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.nccgroup.com/annual-cyber-threat-intelligence-report-2025/" target="_blank">NCC Group Annual Threat Intelligence</a></div>
+      <div class="list-item-pub">NCC Group</div>
+      <div class="list-item-month">Mar</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.proofpoint.com/us/resources/threat-reports/human-factor-social-engineering" target="_blank">Proofpoint Human Factor (multi-vol)</a></div>
+      <div class="list-item-pub">Proofpoint</div>
+      <div class="list-item-month">Mar–Sep</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank">Verizon DBIR</a></div>
+      <div class="list-item-pub">Verizon</div>
+      <div class="list-item-month">May</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.ibm.com/reports/data-breach" target="_blank">IBM Cost of a Data Breach</a></div>
+      <div class="list-item-pub">IBM / Ponemon</div>
+      <div class="list-item-month">Jul</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.microsoft.com/en-us/security/security-insider/threat-landscape/microsoft-digital-defense-report-2025" target="_blank">Microsoft Digital Defense Report</a></div>
+      <div class="list-item-pub">Microsoft</div>
+      <div class="list-item-month">Oct</div>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-header">Sector-Specific: Energy / CNI / OT</div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.dragos.com/ot-cybersecurity-year-in-review" target="_blank">Dragos OT/ICS Cybersecurity Year in Review</a></div>
+      <div class="list-item-pub">Dragos</div>
+      <div class="list-item-month">Feb</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.cisa.gov/news-events/ics-advisories" target="_blank">CISA ICS Advisories</a></div>
+      <div class="list-item-pub">CISA</div>
+      <div class="list-item-month">Rolling</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.nerc.com/pa/CI/ESISAC/Pages/GridEx.aspx" target="_blank">E-ISAC GridEx Exercise Reports</a></div>
+      <div class="list-item-pub">NERC / E-ISAC</div>
+      <div class="list-item-month">Biennial</div>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-header">Insurance &amp; Claims</div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://commercial.allianz.com/news-and-insights/news/allianz-risk-barometer-2026.html" target="_blank">Allianz Risk Barometer</a></div>
+      <div class="list-item-pub">Allianz Commercial</div>
+      <div class="list-item-month">Jan</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.coalitioninc.com/claims-report/2026" target="_blank">Coalition Cyber Claims Report</a></div>
+      <div class="list-item-pub">Coalition</div>
+      <div class="list-item-month">Mar</div>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-header">UK Government &amp; Regulator</div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026" target="_blank">DSIT Cyber Security Breaches Survey</a></div>
+      <div class="list-item-pub">DSIT / Home Office</div>
+      <div class="list-item-month">Apr–May</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.ncsc.gov.uk/collection/ncsc-annual-review-2025" target="_blank">NCSC Annual Review</a></div>
+      <div class="list-item-pub">NCSC (GCHQ)</div>
+      <div class="list-item-month">Oct–Nov</div>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-header">EU / International Government</div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.weforum.org/publications/global-cybersecurity-outlook-2026/" target="_blank">WEF Global Cybersecurity Outlook</a></div>
+      <div class="list-item-pub">World Economic Forum</div>
+      <div class="list-item-month">Jan</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://www.weforum.org/publications/global-risks-report-2026/" target="_blank">WEF Global Risks Report</a></div>
+      <div class="list-item-pub">World Economic Forum</div>
+      <div class="list-item-month">Jan</div>
+    </div>
+    <div class="list-item">
+      <div class="list-item-name"><a href="https://enisa.europa.eu/publications/enisa-threat-landscape-2025" target="_blank">ENISA Threat Landscape</a></div>
+      <div class="list-item-pub">ENISA</div>
+      <div class="list-item-month">Oct</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ NOTES ═══════════ -->
+<div class="notes-section">
+  <h2>Notes &amp; Caveats</h2>
+  <ul>
+    <li>Proofpoint restructured from "State of the Phish" (single annual, ~Jan) to multi-volume "Human Factor" series in 2025. Cadence not yet established across multiple years.</li>
+    <li>E-ISAC GridEx reports are from a biennial exercise (odd years). Reports are typically restricted to NERC participants.</li>
+    <li>FS-ISAC annual reports excluded — behind membership gates with no public links.</li>
+    <li>Secureworks State of the Threat report merged into Sophos following Feb 2025 acquisition.</li>
+    <li>CISA ICS Advisories are rolling (not annual) — included as a daily monitoring source for OT/CNI.</li>
+    <li>IBM Cost of a Data Breach 2026 edition not yet released as of May 2026 — expected July 2026.</li>
+  </ul>
+</div>
+
+<footer>
+  <p>Compiled May 2026. For personal/team reference — not an exhaustive list.</p>
+</footer>
+
+</div>
+
+<script>
+function toggleView(view) {
+  const calView = document.getElementById('calendarView');
+  const listView = document.getElementById('listView');
+  const buttons = document.querySelectorAll('.view-toggle button');
+  
+  buttons.forEach(b => b.classList.remove('active'));
+  
+  if (view === 'calendar') {
+    calView.classList.add('active');
+    listView.classList.remove('active');
+    buttons[0].classList.add('active');
+  } else {
+    calView.classList.remove('active');
+    listView.classList.add('active');
+    buttons[1].classList.add('active');
+  }
+}
+</script>
+</body>
+</html>

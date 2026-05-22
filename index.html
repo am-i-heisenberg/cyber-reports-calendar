@@ -188,11 +188,14 @@
     font-weight: 500;
   }
 
-  .badge-category {
-    background: rgba(167, 139, 250, 0.1);
-    color: var(--purple);
-    border: 1px solid rgba(167, 139, 250, 0.2);
-  }
+  .badge-threat     { background: rgba(167, 139, 250, 0.1); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
+  .badge-ot         { background: rgba(248, 113, 113, 0.1); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.2); }
+  .badge-insurance  { background: rgba(251, 191, 36,  0.1); color: #fbbf24; border: 1px solid rgba(251, 191, 36,  0.2); }
+  .badge-ukgov      { background: rgba(56,  189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56,  189, 248, 0.2); }
+  .badge-eugov      { background: rgba(45,  212, 191, 0.1); color: #2dd4bf; border: 1px solid rgba(45,  212, 191, 0.2); }
+  .badge-intlgov    { background: rgba(129, 140, 248, 0.1); color: #818cf8; border: 1px solid rgba(129, 140, 248, 0.2); }
+  .badge-breach     { background: rgba(251, 146, 60,  0.1); color: #fb923c; border: 1px solid rgba(251, 146, 60,  0.2); }
+  .badge-breach-cost{ background: rgba(74,  222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74,  222, 128, 0.2); }
 
   .report-link {
     font-family: var(--mono);
@@ -357,7 +360,7 @@
       <div class="report-title">Allianz Risk Barometer</div>
       <div class="report-meta">
         <span class="publisher">Allianz Commercial</span>
-        <span class="badge badge-category">Insurance</span>
+        <span class="badge badge-insurance">Insurance</span>
       </div>
       <a class="report-link" href="https://commercial.allianz.com/news-and-insights/news/allianz-risk-barometer-2026.html" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -365,7 +368,7 @@
       <div class="report-title">WEF Global Cybersecurity Outlook</div>
       <div class="report-meta">
         <span class="publisher">World Economic Forum</span>
-        <span class="badge badge-category">Intl Gov</span>
+        <span class="badge badge-intlgov">Intl Gov</span>
       </div>
       <a class="report-link" href="https://www.weforum.org/publications/global-cybersecurity-outlook-2026/" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -373,7 +376,7 @@
       <div class="report-title">WEF Global Risks Report</div>
       <div class="report-meta">
         <span class="publisher">World Economic Forum</span>
-        <span class="badge badge-category">Intl Gov</span>
+        <span class="badge badge-intlgov">Intl Gov</span>
       </div>
       <a class="report-link" href="https://www.weforum.org/publications/global-risks-report-2026/" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -386,7 +389,7 @@
       <div class="report-title">CrowdStrike Global Threat Report</div>
       <div class="report-meta">
         <span class="publisher">CrowdStrike</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.crowdstrike.com/en-us/global-threat-report/" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -394,7 +397,7 @@
       <div class="report-title">IBM X-Force Threat Intelligence Index</div>
       <div class="report-meta">
         <span class="publisher">IBM</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.ibm.com/reports/threat-intelligence" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -402,7 +405,7 @@
       <div class="report-title">Sophos Active Adversary Report</div>
       <div class="report-meta">
         <span class="publisher">Sophos</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.sophos.com/en-us/blog/2026-sophos-active-adversary-report" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -410,7 +413,7 @@
       <div class="report-title">Unit 42 Global Incident Response Report</div>
       <div class="report-meta">
         <span class="publisher">Palo Alto Networks</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.paloaltonetworks.com/resources/research/unit-42-incident-response-report" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -418,7 +421,7 @@
       <div class="report-title">Dragos OT/ICS Cybersecurity Year in Review</div>
       <div class="report-meta">
         <span class="publisher">Dragos</span>
-        <span class="badge badge-category">OT / CNI</span>
+        <span class="badge badge-ot">OT / CNI</span>
       </div>
       <a class="report-link" href="https://www.dragos.com/ot-cybersecurity-year-in-review" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -426,7 +429,7 @@
       <div class="report-title">CISA ICS Advisories</div>
       <div class="report-meta">
         <span class="publisher">CISA</span>
-        <span class="badge badge-category">OT / CNI</span>
+        <span class="badge badge-ot">OT / CNI</span>
       </div>
       <a class="report-link" href="https://www.cisa.gov/news-events/ics-advisories" target="_blank" rel="noopener noreferrer">Rolling — ongoing advisories →</a>
     </div>
@@ -434,7 +437,7 @@
       <div class="report-title">E-ISAC GridEx Exercise Reports</div>
       <div class="report-meta">
         <span class="publisher">NERC / E-ISAC</span>
-        <span class="badge badge-category">OT / CNI</span>
+        <span class="badge badge-ot">OT / CNI</span>
       </div>
       <a class="report-link" href="https://www.nerc.com/pa/CI/ESISAC/Pages/GridEx.aspx" target="_blank" rel="noopener noreferrer">Biennial (odd years) →</a>
     </div>
@@ -447,7 +450,7 @@
       <div class="report-title">Mandiant M-Trends</div>
       <div class="report-meta">
         <span class="publisher">Google / Mandiant</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://cloud.google.com/blog/topics/threat-intelligence/m-trends-2026" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -455,7 +458,7 @@
       <div class="report-title">NCC Group Annual Cyber Threat Intelligence</div>
       <div class="report-meta">
         <span class="publisher">NCC Group</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.nccgroup.com/annual-cyber-threat-intelligence-report-2025/" target="_blank" rel="noopener noreferrer">2025 Report →</a>
     </div>
@@ -463,7 +466,7 @@
       <div class="report-title">Coalition Cyber Claims Report</div>
       <div class="report-meta">
         <span class="publisher">Coalition</span>
-        <span class="badge badge-category">Insurance</span>
+        <span class="badge badge-insurance">Insurance</span>
       </div>
       <a class="report-link" href="https://www.coalitioninc.com/claims-report/2026" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -471,7 +474,7 @@
       <div class="report-title">Proofpoint Human Factor (multi-vol)</div>
       <div class="report-meta">
         <span class="publisher">Proofpoint</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.proofpoint.com/us/resources/threat-reports/human-factor-social-engineering" target="_blank" rel="noopener noreferrer">2025 Vol.1 (Vol.2 follows ~Aug) →</a>
     </div>
@@ -484,7 +487,7 @@
       <div class="report-title">DSIT Cyber Security Breaches Survey</div>
       <div class="report-meta">
         <span class="publisher">DSIT / Home Office</span>
-        <span class="badge badge-category">UK Gov</span>
+        <span class="badge badge-ukgov">UK Gov</span>
       </div>
       <a class="report-link" href="https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026" target="_blank" rel="noopener noreferrer">2025/2026 Edition →</a>
     </div>
@@ -497,7 +500,7 @@
       <div class="report-title">Verizon Data Breach Investigations Report</div>
       <div class="report-meta">
         <span class="publisher">Verizon</span>
-        <span class="badge badge-category">Breach Data</span>
+        <span class="badge badge-breach">Breach Data</span>
       </div>
       <a class="report-link" href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank" rel="noopener noreferrer">2026 Edition →</a>
     </div>
@@ -516,7 +519,7 @@
       <div class="report-title">IBM Cost of a Data Breach Report</div>
       <div class="report-meta">
         <span class="publisher">IBM / Ponemon</span>
-        <span class="badge badge-category">Breach Cost</span>
+        <span class="badge badge-breach-cost">Breach Cost</span>
       </div>
       <a class="report-link" href="https://www.ibm.com/reports/data-breach" target="_blank" rel="noopener noreferrer">2025 Edition (2026 due Jul) →</a>
     </div>
@@ -541,7 +544,7 @@
       <div class="report-title">ENISA Threat Landscape</div>
       <div class="report-meta">
         <span class="publisher">ENISA</span>
-        <span class="badge badge-category">EU Gov</span>
+        <span class="badge badge-eugov">EU Gov</span>
       </div>
       <a class="report-link" href="https://enisa.europa.eu/publications/enisa-threat-landscape-2025" target="_blank" rel="noopener noreferrer">2025 Edition →</a>
     </div>
@@ -549,7 +552,7 @@
       <div class="report-title">Microsoft Digital Defense Report</div>
       <div class="report-meta">
         <span class="publisher">Microsoft</span>
-        <span class="badge badge-category">Threat Intel</span>
+        <span class="badge badge-threat">Threat Intel</span>
       </div>
       <a class="report-link" href="https://www.microsoft.com/en-us/security/security-insider/threat-landscape/microsoft-digital-defense-report-2025" target="_blank" rel="noopener noreferrer">2025 Edition →</a>
     </div>
@@ -557,7 +560,7 @@
       <div class="report-title">NCSC Annual Review</div>
       <div class="report-meta">
         <span class="publisher">NCSC (GCHQ)</span>
-        <span class="badge badge-category">UK Gov</span>
+        <span class="badge badge-ukgov">UK Gov</span>
       </div>
       <a class="report-link" href="https://www.ncsc.gov.uk/collection/ncsc-annual-review-2025" target="_blank" rel="noopener noreferrer">2025 Edition →</a>
     </div>
